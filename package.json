@@ -1,0 +1,15 @@
+{
+  "name": "birdnet-audition",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "w-biggs",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "esbuild \"./src/main.ts\" --bundle --target=es6 --keep-names --outfile=\"./main.js\""
+  },
+  "dependencies": {
+    "csinterface": "https://github.com/ExtendScript/CSInterface.git",
+    "esbuild": "^0.17.19"
+  }
+}
