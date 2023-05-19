@@ -30,3 +30,7 @@ button:active {
 button:focus {
   outline: none;
 }
+
+.sciname {
+  font-weight: 300;
+}

@@ -9,10 +9,12 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <button>Identify with BirdNET</button>
+  <p><button id="identify">Identify with BirdNET</button></p>
+  <p id="result"></p>
   <script src="./lib/JSX.js"></script>
   <script type="text/javascript">
-    jsx.file('./jsx/index.jsx');
+    console.log('loaded');
+    jsx.file('./jsx/index.jsx', () => { console.log('loaded jsx') });
   </script>
   <script src="./main.js"></script>
 </body>
