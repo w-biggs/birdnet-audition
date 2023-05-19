@@ -6,4 +6,6 @@ Currently only installable by cloning this folder to your extensions folder and 
 
 ## TODO
 
-- Use local install instead of API (which is an old model)
+- Use local BirdNET exclusively
+- Make the local command configurable
+- Need to click twice

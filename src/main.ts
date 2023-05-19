@@ -1,7 +1,6 @@
 import { CSInterface } from 'csinterface';
-import * as semver from 'semver';
 import { readFile } from 'fs/promises';
-import { lookup } from 'mime-types';
+import { execFile } from 'child_process';
 
 const csInterface = new CSInterface();
 
@@ -53,6 +52,24 @@ async function submitToBirdNET(path: string) {
   } else {
     writeResult('Errored.');
   }
+
+  const txtPath = path.replace('.wav', '.txt');
+  const args = ['fish', '-c', `python3 ~/dev/BirdNET-Analyzer/analyze.py --i (wslpath -a '${path}') --o (wslpath -a '${txtPath}') --rtype csv --min_conf 0.01 --sensitivity 1.5`];
+
+  console.log(args.join(' '));
+
+  const birdnetLocal = execFile('C:/WINDOWS/system32/wsl.exe', args, async (error, stdout, stderr) => {
+    if (error) {
+      console.error(error);
+    }
+    console.log(stdout);
+
+    const rawLocal = document.getElementById('rawlocal');
+    const resultFileText = await readFile(txtPath, 'utf8');
+    if (rawLocal) {
+      rawLocal.innerText = resultFileText;
+    }
+  });
 };
 
 button?.addEventListener('click', () => {

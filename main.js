@@ -695,6 +695,7 @@ var require_lib = __commonJS({
 // src/main.ts
 var import_csinterface = __toESM(require_lib());
 var import_promises = require("fs/promises");
+var import_child_process = require("child_process");
 var csInterface = new import_csinterface.CSInterface();
 csInterface.setContextMenuByJSON(JSON.stringify({
   id: "refreshPanel",
@@ -715,7 +716,7 @@ function displayPredictions(predictions) {
   for (let i = 0; i < 10; i++) {
     const prediction = predictions[String(i)];
     const species = prediction.species.split(";");
-    predictionString += `<span title="${prediction.score}">${Number(prediction.score).toFixed(3)}: ${species[0]}${species[1] ? `<span class="sciname">(${species[1]})</span>` : ""}</span><br />`;
+    predictionString += `<span title="${prediction.score}">${Number(prediction.score).toFixed(3)}: ${species[0]} ${species[1] ? `<span class="sciname">(${species[1]})</span>` : ""}</span><br />`;
   }
   const resultEl = document.getElementById("result");
   if (resultEl) {
@@ -740,6 +741,20 @@ function submitToBirdNET(path) {
     } else {
       writeResult("Errored.");
     }
+    const txtPath = path.replace(".wav", ".txt");
+    const args = ["fish", "-c", `python3 ~/dev/BirdNET-Analyzer/analyze.py --i (wslpath -a '${path}') --o (wslpath -a '${txtPath}') --rtype csv --min_conf 0.01 --sensitivity 1.5`];
+    console.log(args.join(" "));
+    const birdnetLocal = (0, import_child_process.execFile)("C:/WINDOWS/system32/wsl.exe", args, (error, stdout, stderr) => __async(this, null, function* () {
+      if (error) {
+        console.error(error);
+      }
+      console.log(stdout);
+      const rawLocal = document.getElementById("rawlocal");
+      const resultFileText = yield (0, import_promises.readFile)(txtPath, "utf8");
+      if (rawLocal) {
+        rawLocal.innerText = resultFileText;
+      }
+    }));
   });
 }
 __name(submitToBirdNET, "submitToBirdNET");
